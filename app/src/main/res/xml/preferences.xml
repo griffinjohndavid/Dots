@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:key="colorblind_mode"
+        android:title="@string/colorblindTitle"
+        android:summary="@string/colorblindSummary"
+        android:defaultValue="false" />
+
+    <ListPreference
+        android:key="pref_background_color"
+        android:title="Change Background Color"
+        android:dialogTitle="Select a background color"
+        android:entries="@array/pref_color_names"
+        android:entryValues="@array/pref_color_values"
+        android:defaultValue="1" />
+</PreferenceScreen>

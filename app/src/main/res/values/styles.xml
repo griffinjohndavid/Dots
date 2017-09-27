@@ -17,4 +17,17 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="DotImage">
+        <item name="android:paddingTop">1dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:text">Δ</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">@drawable/dot_blue</item>
+        <item name="android:layout_width">22dp</item>
+        <item name="android:layout_height">22dp</item>
+        <item name="android:layout_margin">12dp</item>
+    </style>
+
 </resources>
