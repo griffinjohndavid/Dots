@@ -16,11 +16,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void timedGameClick(View view) {
-
+        String timedString = "Timed";
+        // Launch GameActivity
+        Intent intent = new Intent(this, GameActivity.class);
+        intent.putExtra("extraGameType", timedString);
+        startActivity(intent);
     }
 
     public void movesGameClick(View view) {
-
+        String movesString = "Moves";
+        // Launch GameActivity
+        Intent intent = new Intent(this, GameActivity.class);
+        intent.putExtra("extraGameType", movesString);
+        startActivity(intent);
     }
 
     public void highscoresClick(View view) {

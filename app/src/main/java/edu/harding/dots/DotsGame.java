@@ -31,9 +31,15 @@ public class DotsGame {
 
     private ArrayList<Dot> mDotPath;
 
-    public DotsGame(GameTypes gameType) {
-
-        mGameType = gameType;
+    public DotsGame(String gameType) {
+        if ("Timed".equals(gameType))
+        {
+            mGameType = GameTypes.Timed;
+        }
+        else if ("Moves".equals(gameType))
+        {
+            mGameType = GameTypes.Moves;
+        }
         mScore = 0;
 
         mDotColors = new int[NUM_COLORS];
