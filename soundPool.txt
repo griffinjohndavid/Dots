@@ -29,10 +29,9 @@ inside Oncreate
 
         mSoundPool = createSoundPool();
         mSoundIds = new ArrayList<>();
-        mSoundIds.add(mSoundPool.load(this, R.raw.cheer, 1));
-        mSoundIds.add(mSoundPool.load(this, R.raw.lose, 1));
-        mSoundIds.add(mSoundPool.load(this, R.raw.swish, 1));
-        mSoundIds.add(mSoundPool.load(this, R.raw.sword, 1));
+        mSoundIds.add(mSoundPool.load(this, R.raw.backGround, 1));
+        mSoundIds.add(mSoundPool.load(this, R.raw.selected, 1));
+        mSoundIds.add(mSoundPool.load(this, R.raw.deselected, 1));
 
 before Oncreate
     private SoundPool mSoundPool;
