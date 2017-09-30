@@ -1,6 +1,7 @@
 package edu.harding.dots;
 
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.os.Build;
@@ -11,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.TextView;
 import android.view.animation.Animation;
@@ -28,6 +30,7 @@ public class GameActivity extends AppCompatActivity {
     private TextView mGameTimerValue;
     private TextView mGameTimer;
     private TextView mScoreValue;
+    private Button mScoreButton;
 
     private String mGameType;
 
@@ -62,6 +65,7 @@ public class GameActivity extends AppCompatActivity {
         mGameTimerValue = (TextView) findViewById(R.id.timeValue);
         mGameTimer = (TextView) findViewById(R.id.time);
         mScoreValue = (TextView) findViewById(R.id.scoreValue);
+        mScoreButton = (Button) findViewById(R.id.shareHiscore);
 
         mGameTextViews = new TextView[(DotsGame.NUM_CELLS * DotsGame.NUM_CELLS)];
 
@@ -124,6 +128,7 @@ public class GameActivity extends AppCompatActivity {
             public void onFinish() {
                 mGameTimerValue.setText("" + 0);
                 mGame.gameOver();
+                mScoreButton.setVisibility(View.VISIBLE);
             }
         }.start();
     }
@@ -259,6 +264,17 @@ public class GameActivity extends AppCompatActivity {
     };
 
     public void shareScore(View view) {
-        
+        Intent intent = new Intent(Intent.ACTION_SEND);
+
+            // Supply extra that is plain text
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_SUBJECT, "My Dots Highscore");
+        intent.putExtra(Intent.EXTRA_TEXT, mScoreValue.getText());
+
+        // If at least one app can handle intent, allow user to choose
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            Intent chooser = intent.createChooser(intent, "Share Highscore");
+            startActivity(chooser);
+        }
     }
 }
