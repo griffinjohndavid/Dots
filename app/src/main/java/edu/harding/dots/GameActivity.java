@@ -257,4 +257,8 @@ public class GameActivity extends AppCompatActivity {
             return false;
         }
     };
+
+    public void shareScore(View view) {
+        
+    }
 }
