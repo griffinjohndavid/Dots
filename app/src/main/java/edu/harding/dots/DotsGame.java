@@ -132,7 +132,7 @@ public class DotsGame {
     }
 
     public AddDotStatus addDotToPath(Dot dot) {
-        if (mMoves <= 0 && mTimer <= 00)
+        if (mMoves <= 0 && mTimer <= 0)
         {
             // game is over, save score to highscores
             gameOver();
