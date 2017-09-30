@@ -40,6 +40,7 @@ import java.util.List;
 public class SettingsActivity extends AppCompatPreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private String BACKGROUND_COLOR = "";
+    private Boolean IS_COLOR_BLIND = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
     protected void onStop() {
         Intent intent = new Intent();
         intent.putExtra("newBackground", BACKGROUND_COLOR);
+        intent.putExtra("isColorBlind", IS_COLOR_BLIND);
 
         setResult(RESULT_OK, intent);
 
@@ -95,6 +97,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
             Preference backgroundPref = findPreference(key);
             BACKGROUND_COLOR = sharedPreferences.getString(key, "");
             backgroundPref.setSummary(BACKGROUND_COLOR);
+        }
+        else if (key.equals("colorblind_mode")) {
+            Preference backgroundPref = findPreference(key);
+            IS_COLOR_BLIND = sharedPreferences.getBoolean(key, false);
         }
     }
 }

@@ -37,6 +37,8 @@ public class GameActivity extends AppCompatActivity {
     private String YELLOW = "–";
     private String PURPLE = "~";
 
+    private Boolean mIsColorBlind = false;
+
 
     public SoundPool mSoundPool;
     private ArrayList<Integer> mSoundIds;
@@ -54,6 +56,8 @@ public class GameActivity extends AppCompatActivity {
         mSoundIds.add(mSoundPool.load(this, R.raw.deselect, 1));
         
         this.findViewById(android.R.id.content).setBackgroundColor(parseColor(getIntent().getStringExtra("bgColor")));
+
+        mIsColorBlind = getIntent().getBooleanExtra("isColorBlind", false);
 
         mGameTimerValue = (TextView) findViewById(R.id.timeValue);
         mGameTimer = (TextView) findViewById(R.id.time);
@@ -152,27 +156,27 @@ public class GameActivity extends AppCompatActivity {
                 {
                     if (mGame.getDot(row, col).color == 0)
                     {
-                        mGameTextViews[i].setText(RED);
+                        if (mIsColorBlind) {mGameTextViews[i].setText(RED);}
                         mGameTextViews[i].setBackground(ContextCompat.getDrawable(this, R.drawable.dot_red));
                     }
                     else if (mGame.getDot(row, col).color == 1)
                     {
-                        mGameTextViews[i].setText(GREEN);
+                        if (mIsColorBlind) {mGameTextViews[i].setText(GREEN);}
                         mGameTextViews[i].setBackground(ContextCompat.getDrawable(this, R.drawable.dot_green));
                     }
                     else if (mGame.getDot(row, col).color == 2)
                     {
-                        mGameTextViews[i].setText(BLUE);
+                        if (mIsColorBlind) {mGameTextViews[i].setText(BLUE);}
                         mGameTextViews[i].setBackground(ContextCompat.getDrawable(this, R.drawable.dot_blue));
                     }
                     else if (mGame.getDot(row, col).color == 3)
                     {
-                        mGameTextViews[i].setText(YELLOW);
+                        if (mIsColorBlind) {mGameTextViews[i].setText(YELLOW);}
                         mGameTextViews[i].setBackground(ContextCompat.getDrawable(this, R.drawable.dot_yellow));
                     }
                     else if (mGame.getDot(row, col).color == 4)
                     {
-                        mGameTextViews[i].setText(PURPLE);
+                        if (mIsColorBlind) {mGameTextViews[i].setText(PURPLE);}
                         mGameTextViews[i].setBackground(ContextCompat.getDrawable(this, R.drawable.dot_purple));
                     }
                     i++;
