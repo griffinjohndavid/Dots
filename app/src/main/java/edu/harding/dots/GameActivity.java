@@ -1,5 +1,6 @@
 package edu.harding.dots;
 
+import android.os.CountDownTimer;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -50,6 +51,7 @@ public class GameActivity extends AppCompatActivity {
         {
             mGameType = "Timed";
             mGameTimerValue.setText(DotsGame.INIT_TIME + "");
+            countdownTimer();
         }
         else if ("Moves".equals(getIntent().getStringExtra("extraGameType")))
         {
@@ -63,6 +65,22 @@ public class GameActivity extends AppCompatActivity {
         drawBoard();
     }
 
+    private void countdownTimer() {
+        // code from https://developer.android.com/reference/android/os/CountDownTimer.html
+        new CountDownTimer(30000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                mGameTimerValue.setText("" + millisUntilFinished / 1000);
+                mGame.timerTick();
+            }
+
+            public void onFinish() {
+                mGameTimerValue.setText("" + 0);
+                mGame.gameOver();
+            }
+        }.start();
+    }
+
     public void newGameClick(View view) {
         // May need more code?
         mGame = new DotsGame(mGameType);
@@ -74,6 +92,7 @@ public class GameActivity extends AppCompatActivity {
         else if (mGame.getGameType().equals("Timed"))
         {
             mGameTimerValue.setText(mGame.getTime());
+            countdownTimer();
         }
         drawBoard();
     }
@@ -154,10 +173,6 @@ public class GameActivity extends AppCompatActivity {
                 if (mGame.getGameType().equals("Moves"))
                 {
                     mGameTimerValue.setText(mGame.getMoves());
-                }
-                else if (mGame.getGameType().equals("Timed"))
-                {
-                    mGameTimerValue.setText(mGame.getTime());
                 }
                 mGame.clearDotPath();
                 drawBoard();

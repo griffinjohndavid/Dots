@@ -17,10 +17,12 @@ public class DotsGame {
     public static int INIT_MOVES = 15;
     public static int INIT_TIME = 30;
 
+
     public enum AddDotStatus { Added, Rejected, Removed, CompleteCycle };
 
     public enum GameTypes { Timed, Moves };
     private GameTypes mGameType;
+    private boolean mGameStatus;
 
     private int mScore;
     public int mMoves;
@@ -59,11 +61,13 @@ public class DotsGame {
             }
         }
 
+        mGameStatus = false;
         mDotPath = new ArrayList();
     }
 
     public void newGame() {
         mScore = 0;
+        mGameStatus = false;
 
         for (int row = 0; row < mNumCells; row++) {
             for (int col = 0; col < mNumCells; col++) {
@@ -106,6 +110,11 @@ public class DotsGame {
         return mDots[row][col];
     }
 
+    public void timerTick()
+    {
+        mTimer--;
+    }
+
     public ArrayList<Dot> getDotPath() {
         return mDotPath;
     }
@@ -129,13 +138,13 @@ public class DotsGame {
     }
 
     public AddDotStatus addDotToPath(Dot dot) {
-        if (mMoves <= 0 && mTimer <= 0)
+        if (mMoves <= 0)
         {
             // game is over, save score to highscores
             gameOver();
             return AddDotStatus.Rejected;
         }
-        else {
+        else if (!isGameOver()){
             if (mDotPath.size() == 0) {
                 mDotPath.add(dot);
                 dot.selected = true;
@@ -184,8 +193,12 @@ public class DotsGame {
         return AddDotStatus.Rejected;
     }
 
-    private void gameOver() {
+    public void gameOver() {
         // save mScore to something
+        mGameStatus = true;
+    }
+    public boolean isGameOver(){
+        return mGameStatus;
     }
 
     public void finishMove() {
@@ -203,14 +216,12 @@ public class DotsGame {
                 topDot.changeColor();
             }
 
-            mScore += mDotPath.size();
-            if (mGameType == GameTypes.Moves)
-            {
-                mMoves--;
-            }
-            else if (mGameType == GameTypes.Timed)
-            {
-                // update timer?
+            if (!isGameOver()) {
+                mScore += mDotPath.size();
+                if (mGameType == GameTypes.Moves)
+                {
+                    mMoves--;
+                }
             }
         }
     }
