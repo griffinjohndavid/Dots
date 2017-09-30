@@ -51,6 +51,7 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide);
         
         mSoundPool = createSoundPool();
         mSoundIds = new ArrayList<>();
@@ -67,9 +68,11 @@ public class GameActivity extends AppCompatActivity {
         mScoreValue = (TextView) findViewById(R.id.scoreValue);
         mScoreButton = (Button) findViewById(R.id.shareHiscore);
 
-        mGameTextViews = new TextView[(DotsGame.NUM_CELLS * DotsGame.NUM_CELLS)];
-
+        mGameTextViews = new TextView[(DotsGame.NUM_CELLS * DotsGame.NUM_CELLS)]
+            
         GridLayout gridLayout = (GridLayout) findViewById(R.id.gameBoard);
+        gridLayout.startAnimation(animation1);
+        
         for (int i = 0; i < gridLayout.getChildCount(); i++) {
             mGameTextViews[i] = (TextView) gridLayout.getChildAt(i);
         }
@@ -146,6 +149,11 @@ public class GameActivity extends AppCompatActivity {
             mGameTimerValue.setText(mGame.getTime());
             countdownTimer();
         }
+        Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fate_in);
+
+        GridLayout gridLayout = (GridLayout) findViewById(R.id.gameBoard);
+
+        gridLayout.startAnimation(animation1);
         drawBoard();
     }
 
