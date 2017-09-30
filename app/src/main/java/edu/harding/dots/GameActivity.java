@@ -1,5 +1,6 @@
 package edu.harding.dots;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -53,7 +54,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void menuClick(View view) {
-
+        super.onBackPressed();
     }
 
     public void drawBoard() {
@@ -65,22 +66,27 @@ public class GameActivity extends AppCompatActivity {
                     if (mGame.getDot(row, col).color == 0)
                     {
                         mGameTextViews[i].setText(RED);
+                        mGameTextViews[i].setBackground(ContextCompat.getDrawable(this, R.drawable.dot_red));
                     }
                     else if (mGame.getDot(row, col).color == 1)
                     {
                         mGameTextViews[i].setText(GREEN);
+                        mGameTextViews[i].setBackground(ContextCompat.getDrawable(this, R.drawable.dot_green));
                     }
                     else if (mGame.getDot(row, col).color == 2)
                     {
                         mGameTextViews[i].setText(BLUE);
+                        mGameTextViews[i].setBackground(ContextCompat.getDrawable(this, R.drawable.dot_blue));
                     }
                     else if (mGame.getDot(row, col).color == 3)
                     {
                         mGameTextViews[i].setText(YELLOW);
+                        mGameTextViews[i].setBackground(ContextCompat.getDrawable(this, R.drawable.dot_yellow));
                     }
                     else if (mGame.getDot(row, col).color == 4)
                     {
                         mGameTextViews[i].setText(PURPLE);
+                        mGameTextViews[i].setBackground(ContextCompat.getDrawable(this, R.drawable.dot_purple));
                     }
                     i++;
                 }
