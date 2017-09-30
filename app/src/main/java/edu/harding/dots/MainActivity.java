@@ -2,6 +2,7 @@ package edu.harding.dots;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -13,11 +14,16 @@ public class MainActivity extends AppCompatActivity {
 
     private String bgColor = "#646464";
     private Boolean isColorBlind = false;
+    MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+    mediaPlayer = MediaPlayer.create(this, R.raw.background);
+        mediaPlayer.setLooping(true);
+        mediaPlayer.start();
     }
 
     @Override
@@ -29,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d("test", "background = " + prefs.getString("pref_background_color", "?"));
         bgColor = prefs.getString("pref_background_color", "?");
         isColorBlind = prefs.getBoolean("colorblind_mode", isColorBlind);
+        mediaPlayer.start();
     }
 
     public void timedGameClick(View view) {
