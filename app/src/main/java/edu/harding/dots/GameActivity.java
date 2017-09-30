@@ -13,6 +13,8 @@ public class GameActivity extends AppCompatActivity {
     private DotsGame mGame;
 
     private TextView[] mGameTextViews;
+    private TextView mGameTimerValue;
+    private TextView mGameTimer;
 
     private String mGameType;
 
@@ -28,6 +30,9 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        mGameTimerValue = (TextView) findViewById(R.id.timeValue);
+        mGameTimer = (TextView) findViewById(R.id.time);
+
         mGameTextViews = new TextView[(DotsGame.NUM_CELLS * DotsGame.NUM_CELLS)];
 
         GridLayout gridLayout = (GridLayout) findViewById(R.id.gameBoard);
@@ -38,10 +43,13 @@ public class GameActivity extends AppCompatActivity {
         if ("Timed".equals(getIntent().getStringExtra("extraGameType")))
         {
             mGameType = "Timed";
+            mGameTimerValue.setText(DotsGame.INIT_TIME + "");
         }
         else if ("Moves".equals(getIntent().getStringExtra("extraGameType")))
         {
             mGameType = "Moves";
+            mGameTimerValue.setText(DotsGame.INIT_MOVES + "");
+            mGameTimer.setText(R.string.movesText);
         }
         mGame = new DotsGame(mGameType);
         drawBoard();
@@ -125,6 +133,14 @@ public class GameActivity extends AppCompatActivity {
                 // add code for updating view
                 mGame.addDotToPath(mGame.getDot(row, col));
                 mGame.finishMove();
+                if (mGame.getGameType().equals("Moves"))
+                {
+                    mGameTimerValue.setText(mGame.getMoves());
+                }
+                else if (mGame.getGameType().equals("Timed"))
+                {
+                    mGameTimerValue.setText(mGame.getTime());
+                }
                 mGame.clearDotPath();
                 drawBoard();
                 return true;

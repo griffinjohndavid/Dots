@@ -23,6 +23,8 @@ public class DotsGame {
     private GameTypes mGameType;
 
     private int mScore;
+    public int mMoves;
+    public int mTimer;
 
     private int mNumCells = NUM_CELLS;
     private Dot[][] mDots;
@@ -35,10 +37,12 @@ public class DotsGame {
         if ("Timed".equals(gameType))
         {
             mGameType = GameTypes.Timed;
+            mTimer = INIT_TIME;
         }
         else if ("Moves".equals(gameType))
         {
             mGameType = GameTypes.Moves;
+            mMoves = INIT_MOVES;
         }
         mScore = 0;
 
@@ -68,8 +72,29 @@ public class DotsGame {
         }
     }
 
-    public GameTypes getGameType() {
-        return mGameType;
+    public String getGameType() {
+        if (mGameType == GameTypes.Moves)
+        {
+            String tempGameType = "Moves";
+            return tempGameType;
+        }
+        if (mGameType == GameTypes.Timed)
+        {
+            String tempGameType = "Timed";
+            return tempGameType;
+        }
+        String tempGameType = "None";
+        return tempGameType;
+    }
+
+    public String getMoves(){
+        String moveCount = ("" + mMoves);
+        return moveCount;
+    }
+
+    public String getTime(){
+        String timeCount = ("" + mTimer);
+        return timeCount;
     }
 
     public int getScore() {
@@ -166,6 +191,14 @@ public class DotsGame {
             }
 
             mScore += mDotPath.size();
+            if (mGameType == GameTypes.Moves)
+            {
+                mMoves--;
+            }
+            else if (mGameType == GameTypes.Timed)
+            {
+                mTimer--;
+            }
         }
     }
 }
