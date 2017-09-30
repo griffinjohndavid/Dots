@@ -79,31 +79,25 @@ public class DotsGame {
     public String getGameType() {
         if (mGameType == GameTypes.Moves)
         {
-            String tempGameType = "Moves";
-            return tempGameType;
+            return "Moves";
         }
         if (mGameType == GameTypes.Timed)
         {
-            String tempGameType = "Timed";
-            return tempGameType;
+            return "Timed";
         }
-        String tempGameType = "None";
-        return tempGameType;
+        return "None";
     }
 
     public String getMoves(){
-        String moveCount = ("" + mMoves);
-        return moveCount;
+        return "" + mMoves;
     }
 
     public String getTime(){
-        String timeCount = ("" + mTimer);
-        return timeCount;
+        return "" + mTimer;
     }
 
     public String getScore() {
-        String tempScore = (mScore + "");
-        return tempScore;
+        return mScore + "";
     }
 
     public Dot getDot(int row, int col) {
