@@ -15,6 +15,7 @@ public class GameActivity extends AppCompatActivity {
     private TextView[] mGameTextViews;
     private TextView mGameTimerValue;
     private TextView mGameTimer;
+    private TextView mScoreValue;
 
     private String mGameType;
 
@@ -32,6 +33,7 @@ public class GameActivity extends AppCompatActivity {
 
         mGameTimerValue = (TextView) findViewById(R.id.timeValue);
         mGameTimer = (TextView) findViewById(R.id.time);
+        mScoreValue = (TextView) findViewById(R.id.scoreValue);
 
         mGameTextViews = new TextView[(DotsGame.NUM_CELLS * DotsGame.NUM_CELLS)];
 
@@ -51,13 +53,24 @@ public class GameActivity extends AppCompatActivity {
             mGameTimerValue.setText(DotsGame.INIT_MOVES + "");
             mGameTimer.setText(R.string.movesText);
         }
+
         mGame = new DotsGame(mGameType);
+        mScoreValue.setText(mGame.getScore());
         drawBoard();
     }
 
     public void newGameClick(View view) {
         // May need more code?
         mGame = new DotsGame(mGameType);
+        mScoreValue.setText(mGame.getScore());
+        if (mGame.getGameType().equals("Moves"))
+        {
+            mGameTimerValue.setText(mGame.getMoves());
+        }
+        else if (mGame.getGameType().equals("Timed"))
+        {
+            mGameTimerValue.setText(mGame.getTime());
+        }
         drawBoard();
     }
 
@@ -133,6 +146,7 @@ public class GameActivity extends AppCompatActivity {
                 // add code for updating view
                 mGame.addDotToPath(mGame.getDot(row, col));
                 mGame.finishMove();
+                mScoreValue.setText(mGame.getScore());
                 if (mGame.getGameType().equals("Moves"))
                 {
                     mGameTimerValue.setText(mGame.getMoves());

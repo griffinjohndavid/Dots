@@ -97,8 +97,9 @@ public class DotsGame {
         return timeCount;
     }
 
-    public int getScore() {
-        return mScore;
+    public String getScore() {
+        String tempScore = (mScore + "");
+        return tempScore;
     }
 
     public Dot getDot(int row, int col) {
@@ -130,6 +131,8 @@ public class DotsGame {
     public AddDotStatus addDotToPath(Dot dot) {
         if (mMoves <= 0 && mTimer <= 0)
         {
+            // game is over, save score to highscores
+            gameOver();
             return AddDotStatus.Rejected;
         }
         else {
@@ -179,6 +182,10 @@ public class DotsGame {
         }
 
         return AddDotStatus.Rejected;
+    }
+
+    private void gameOver() {
+        // save mScore to something
     }
 
     public void finishMove() {
