@@ -125,14 +125,16 @@ public class GameActivity extends AppCompatActivity {
     public void gameModeMoves(Integer movesLeft)
     {
         mGameType = "Moves";
-        mGameTimerValue.setText(movesLeft + "");
+        String movesLeftValue = (movesLeft + "");
+        mGameTimerValue.setText(movesLeftValue);
         mGameTimer.setText(R.string.movesText);
     }
 
     public void gameModeTimed(Integer timeLength)
     {
         mGameType = "Timed";
-        mGameTimerValue.setText(defaultTime + "");
+        String timeValueToSet = (defaultTime + "");
+        mGameTimerValue.setText(timeValueToSet);
         countdownTimer(timeLength * 1000);
     }
 
@@ -177,12 +179,14 @@ public class GameActivity extends AppCompatActivity {
         mCountDownTimer = new CountDownTimer(timeLength, 1000) {
 
             public void onTick(long millisUntilFinished) {
-                mGameTimerValue.setText("" + millisUntilFinished / 1000);
+                String timeValueToSet = ("" + millisUntilFinished / 1000);
+                mGameTimerValue.setText(timeValueToSet);
                 mGame.timerTick();
             }
 
             public void onFinish() {
-                mGameTimerValue.setText("" + 0);
+                String timeValueToSet = ("" + 0);
+                mGameTimerValue.setText(timeValueToSet);
                 mGame.gameOver();
                 if (mGame.isGameOver()) {mScoreButton.setVisibility(View.VISIBLE);}
             }
@@ -190,19 +194,18 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void newGameClick(View view) {
-        // May need more code?
         mGame = new DotsGame(mGameType);
+        mCountDownTimer.cancel();
+        if ("Timed".equals(getIntent().getStringExtra("extraGameType")))
+        {
+            gameModeTimed(defaultTime);
+        }
+        if ("Moves".equals(getIntent().getStringExtra("extraGameType")))
+        {
+            gameModeMoves(defaultMoves);
+        }
         mScoreValue.setText(mGame.getScore());
-        if (mGame.getGameType().equals("Moves"))
-        {
-            mGameTimerValue.setText(mGame.getMoves());
-        }
-        else if (mGame.getGameType().equals("Timed"))
-        {
-            mCountDownTimer.cancel();
-            mGameTimerValue.setText(mGame.getTime());
-            countdownTimer(defaultTime);
-        }
+        drawBoard();
         Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fate_in);
 
         GridLayout gridLayout = (GridLayout) findViewById(R.id.gameBoard);
@@ -292,7 +295,7 @@ public class GameActivity extends AppCompatActivity {
             int col = x / cellWidth;
             int row = y / cellHeight;
             int index = row * 6 + col;
-            if ((col < mGame.NUM_CELLS && col > -1) && (row < mGame.NUM_CELLS && row > -1))
+            if ((col < DotsGame.NUM_CELLS && col > -1) && (row < DotsGame.NUM_CELLS && row > -1))
             {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     // add code for updating view
