@@ -1,6 +1,7 @@
 package edu.harding.dots;
 
 import android.os.CountDownTimer;
+import android.media.SoundPool;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,11 +30,21 @@ public class GameActivity extends AppCompatActivity {
     private String PURPLE = "~";
 
 
+    public SoundPool mSoundPool;
+    private ArrayList<Integer> mSoundIds;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        
+        mSoundPool = createSoundPool();
+        mSoundIds = new ArrayList<>();
+        mSoundIds.add(mSoundPool.load(this, R.raw.background, 1));
+        mSoundIds.add(mSoundPool.load(this, R.raw.select, 1));
+        mSoundIds.add(mSoundPool.load(this, R.raw.deselect, 1));
+        
         this.findViewById(android.R.id.content).setBackgroundColor(parseColor(getIntent().getStringExtra("bgColor")));
 
         mGameTimerValue = (TextView) findViewById(R.id.timeValue);
@@ -63,6 +74,30 @@ public class GameActivity extends AppCompatActivity {
         mGame = new DotsGame(mGameType);
         mScoreValue.setText(mGame.getScore());
         drawBoard();
+    }
+    
+        protected SoundPool createSoundPool() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            return createNewSoundPool();
+        } else {
+            return createOldSoundPool();
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    protected SoundPool createNewSoundPool(){
+        AudioAttributes attributes = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_GAME)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .build();
+        return new SoundPool.Builder()
+                .setAudioAttributes(attributes)
+                .build();
+    }
+
+    @SuppressWarnings("deprecation")
+    protected SoundPool createOldSoundPool(){
+        return new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
     }
 
     private void countdownTimer() {
@@ -156,12 +191,14 @@ public class GameActivity extends AppCompatActivity {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 // add code for updating view
                 mGame.addDotToPath(mGame.getDot(row, col));
+                mSoundPool.play(mSoundIds.get(1), 1, 1, 1, 0, 1);
                 drawBoard();
                 return true;
             }
             else if (event.getAction() == MotionEvent.ACTION_MOVE) {
                 // add code for updating view
-                mGame.addDotToPath(mGame.getDot(row, col));
+                mGame.addDotToPath(mGame.getDot(row, col));                
+                mSoundPool.play(mSoundIds.get(1), 1, 1, 1, 0, 1);
                 drawBoard();
                 return true;
             }
@@ -175,6 +212,7 @@ public class GameActivity extends AppCompatActivity {
                     mGameTimerValue.setText(mGame.getMoves());
                 }
                 mGame.clearDotPath();
+                mSoundPool.play(mSoundIds.get(2), 1, 1, 1, 0, 1);
                 drawBoard();
                 return true;
             }

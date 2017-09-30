@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         // Launch GameActivity
         Intent intent = new Intent(this, GameActivity.class);
         intent.putExtra("extraGameType", timedString);
+        if (bgColor == "?") {bgColor = "#646464";}
         intent.putExtra("bgColor", bgColor);
         startActivity(intent);
     }
