@@ -19,6 +19,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static android.graphics.Color.parseColor;
 
@@ -41,6 +42,9 @@ public class GameActivity extends AppCompatActivity {
     private String BLUE = "Δ";
     private String YELLOW = "–";
     private String PURPLE = "~";
+
+    private Integer defaultTime = DotsGame.INIT_TIME;
+    private Integer defaultMoves = DotsGame.INIT_MOVES;
 
     private Boolean mIsColorBlind = false;
 
@@ -79,22 +83,69 @@ public class GameActivity extends AppCompatActivity {
             mGameTextViews[i] = (TextView) gridLayout.getChildAt(i);
         }
         gridLayout.setOnTouchListener(GridTouchListener);
-        if ("Timed".equals(getIntent().getStringExtra("extraGameType")))
-        {
-            mGameType = "Timed";
-            mGameTimerValue.setText(DotsGame.INIT_TIME + "");
-            countdownTimer();
+
+        // Is activity being re-created?
+        if (savedInstanceState == null) {
+            if ("Timed".equals(getIntent().getStringExtra("extraGameType")))
+            {
+                gameModeTimed(defaultTime);
+            }
+            if ("Moves".equals(getIntent().getStringExtra("extraGameType")))
+            {
+                gameModeMoves(defaultMoves);
+            }
+            mGame = new DotsGame(mGameType);
+            mScoreValue.setText(mGame.getScore());
+            drawBoard();
         }
-        else if ("Moves".equals(getIntent().getStringExtra("extraGameType")))
-        {
-            mGameType = "Moves";
-            mGameTimerValue.setText(DotsGame.INIT_MOVES + "");
-            mGameTimer.setText(R.string.movesText);
+        else {
+
+            mGame = new DotsGame(mGameType);
+            // Restore game state
+            if ("Timed".equals(getIntent().getStringExtra("extraGameType")))
+            {
+                gameModeTimed(savedInstanceState.getInt("timeLeft"));
+                mGame.mTimer = savedInstanceState.getInt("timeLeft");
+            }
+            if ("Moves".equals(getIntent().getStringExtra("extraGameType")))
+            {
+                gameModeMoves(savedInstanceState.getInt("movesLeft"));
+                mGame.mMoves = savedInstanceState.getInt("movesLeft");
+            }
+            mGame.setScore(savedInstanceState.getString("scoreAmount"));
+            mScoreValue.setText(mGame.getScore());
+            ArrayList<Integer> boardState = savedInstanceState.getIntegerArrayList("boardState");
+            mGame.restoreState(boardState);
+            if (mGame.isGameOver()) {mScoreButton.setVisibility(View.VISIBLE);}
+            drawBoard();
         }
 
-        mGame = new DotsGame(mGameType);
-        mScoreValue.setText(mGame.getScore());
-        drawBoard();
+    }
+
+    public void gameModeMoves(Integer movesLeft)
+    {
+        mGameType = "Moves";
+        mGameTimerValue.setText(movesLeft + "");
+        mGameTimer.setText(R.string.movesText);
+    }
+
+    public void gameModeTimed(Integer timeLength)
+    {
+        mGameType = "Timed";
+        mGameTimerValue.setText(DotsGame.INIT_TIME + "");
+        countdownTimer(timeLength * 1000);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        // Save the board's state
+        ArrayList<Integer> boardState = mGame.getBoardState();
+        outState.putIntegerArrayList("boardState", boardState);
+        outState.putInt("timeLeft", mGame.mTimer);
+        outState.putInt("movesLeft", mGame.mMoves);
+        outState.putString("scoreAmount", mGame.getScore());
     }
     
         protected SoundPool createSoundPool() {
@@ -121,9 +172,9 @@ public class GameActivity extends AppCompatActivity {
         return new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
     }
 
-    private void countdownTimer() {
+    private void countdownTimer(Integer timeLength) {
         // code from https://developer.android.com/reference/android/os/CountDownTimer.html
-        mCountDownTimer = new CountDownTimer(30000, 1000) {
+        mCountDownTimer = new CountDownTimer(timeLength, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 mGameTimerValue.setText("" + millisUntilFinished / 1000);
@@ -133,7 +184,7 @@ public class GameActivity extends AppCompatActivity {
             public void onFinish() {
                 mGameTimerValue.setText("" + 0);
                 mGame.gameOver();
-
+                if (mGame.isGameOver()) {mScoreButton.setVisibility(View.VISIBLE);}
             }
         }.start();
     }
@@ -150,7 +201,7 @@ public class GameActivity extends AppCompatActivity {
         {
             mCountDownTimer.cancel();
             mGameTimerValue.setText(mGame.getTime());
-            countdownTimer();
+            countdownTimer(defaultTime);
         }
         Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fate_in);
 
@@ -261,7 +312,6 @@ public class GameActivity extends AppCompatActivity {
                     // add code for updating view
                     mGame.addDotToPath(mGame.getDot(row, col));
                     mGame.finishMove();
-                    if (mGame.isGameOver()) {mScoreButton.setVisibility(View.VISIBLE);}
                     mGame.checkGameOver();
                     mScoreValue.setText(mGame.getScore());
                     if (mGame.getGameType().equals("Moves"))
@@ -270,9 +320,7 @@ public class GameActivity extends AppCompatActivity {
                     }
                     mGame.clearDotPath();
                     mSoundPool.play(mSoundIds.get(2), 1, 1, 1, 0, 1);
-                    if (mGame.isGameOver()){
-                        mScoreButton.setVisibility(View.VISIBLE);
-                    }
+                    if (mGame.isGameOver()) {mScoreButton.setVisibility(View.VISIBLE);}
                     drawBoard();
                     return true;
                 }

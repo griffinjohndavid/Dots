@@ -1,8 +1,11 @@
 package edu.harding.dots;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * Created by fmccown on 9/5/2017.
@@ -98,6 +101,10 @@ public class DotsGame {
 
     public String getScore() {
         return mScore + "";
+    }
+
+    public void setScore(String scoreAmount) {
+        mScore = Integer.parseInt(scoreAmount);
     }
 
     public Dot getDot(int row, int col) {
@@ -223,6 +230,30 @@ public class DotsGame {
                 {
                     mMoves--;
                 }
+            }
+        }
+    }
+
+    public ArrayList<Integer> getBoardState() {
+        // return a list that has colors for each dot
+        ArrayList<Integer> boardState = new ArrayList<>();
+        for (int row = 0; row < NUM_CELLS; row++) {
+            for (int col = 0; col < NUM_CELLS; col++) {
+                boardState.add(mDots[row][col].color);
+            }
+        }
+        Log.d("test", "boardState = " + boardState);
+
+        return boardState;
+    }
+
+    public void restoreState(ArrayList<Integer> boardState) {
+        // Put the color values from boardState into mDots for each dot
+        int index = 0;
+        for (int row = 0; row < NUM_CELLS; row++) {
+            for (int col = 0; col < NUM_CELLS; col++) {
+                mDots[row][col].color = boardState.get(index);
+                index++;
             }
         }
     }
