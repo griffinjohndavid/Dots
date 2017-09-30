@@ -15,11 +15,11 @@ public class GameActivity extends AppCompatActivity {
 
     private String mGameType;
 
-    private char RED = '×';
-    private char GREEN = '+';
-    private char BLUE = 'Δ';
-    private char YELLOW = '–';
-    private char PURPLE = '~';
+    private String RED = "×";
+    private String GREEN = "+";
+    private String BLUE = "Δ";
+    private String YELLOW = "–";
+    private String PURPLE = "~";
 
 
     @Override
@@ -43,14 +43,49 @@ public class GameActivity extends AppCompatActivity {
             mGameType = "Moves";
         }
         mGame = new DotsGame(mGameType);
+        drawBoard();
     }
 
     public void newGameClick(View view) {
         // May need more code?
         mGame = new DotsGame(mGameType);
+        drawBoard();
     }
 
     public void menuClick(View view) {
+
+    }
+
+    public void drawBoard() {
+        int i = 0;
+        for (int row = 0; row < DotsGame.NUM_CELLS; row++) {
+            for (int col = 0; col < DotsGame.NUM_CELLS; col++) {
+                if (i < mGameTextViews.length)
+                {
+                    if (mGame.getDot(row, col).color == 0)
+                    {
+                        mGameTextViews[i].setText(RED);
+                    }
+                    else if (mGame.getDot(row, col).color == 1)
+                    {
+                        mGameTextViews[i].setText(GREEN);
+                    }
+                    else if (mGame.getDot(row, col).color == 2)
+                    {
+                        mGameTextViews[i].setText(BLUE);
+                    }
+                    else if (mGame.getDot(row, col).color == 3)
+                    {
+                        mGameTextViews[i].setText(YELLOW);
+                    }
+                    else if (mGame.getDot(row, col).color == 4)
+                    {
+                        mGameTextViews[i].setText(PURPLE);
+                    }
+                    i++;
+                }
+            }
+        }
 
     }
 
@@ -71,17 +106,21 @@ public class GameActivity extends AppCompatActivity {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 // add code for updating view
                 mGame.addDotToPath(mGame.getDot(row, col));
+                drawBoard();
                 return true;
             }
             else if (event.getAction() == MotionEvent.ACTION_MOVE) {
                 // add code for updating view
                 mGame.addDotToPath(mGame.getDot(row, col));
+                drawBoard();
                 return true;
             }
             else if (event.getAction() == MotionEvent.ACTION_UP) {
                 // add code for updating view
+                mGame.addDotToPath(mGame.getDot(row, col));
                 mGame.finishMove();
                 mGame.clearDotPath();
+                drawBoard();
                 return true;
             }
 
