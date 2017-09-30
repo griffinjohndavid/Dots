@@ -132,7 +132,7 @@ public class GameActivity extends AppCompatActivity {
     public void gameModeTimed(Integer timeLength)
     {
         mGameType = "Timed";
-        mGameTimerValue.setText(DotsGame.INIT_TIME + "");
+        mGameTimerValue.setText(defaultTime + "");
         countdownTimer(timeLength * 1000);
     }
 
