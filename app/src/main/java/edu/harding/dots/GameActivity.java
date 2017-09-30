@@ -133,7 +133,7 @@ public class GameActivity extends AppCompatActivity {
             public void onFinish() {
                 mGameTimerValue.setText("" + 0);
                 mGame.gameOver();
-                mScoreButton.setVisibility(View.VISIBLE);
+
             }
         }.start();
     }
@@ -158,6 +158,7 @@ public class GameActivity extends AppCompatActivity {
 
         gridLayout.startAnimation(animation1);
         drawBoard();
+        mScoreButton.setVisibility(View.INVISIBLE);
     }
 
     public void menuClick(View view) {
@@ -260,6 +261,7 @@ public class GameActivity extends AppCompatActivity {
                     // add code for updating view
                     mGame.addDotToPath(mGame.getDot(row, col));
                     mGame.finishMove();
+                    if (mGame.isGameOver()) {mScoreButton.setVisibility(View.VISIBLE);}
                     mScoreValue.setText(mGame.getScore());
                     if (mGame.getGameType().equals("Moves"))
                     {
@@ -282,7 +284,7 @@ public class GameActivity extends AppCompatActivity {
             // Supply extra that is plain text
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_SUBJECT, "My Dots Highscore");
-        intent.putExtra(Intent.EXTRA_TEXT, mScoreValue.getText());
+        intent.putExtra(Intent.EXTRA_TEXT, "My highscore in Dots was " + mScoreValue.getText());
 
         // If at least one app can handle intent, allow user to choose
         if (intent.resolveActivity(getPackageManager()) != null) {
