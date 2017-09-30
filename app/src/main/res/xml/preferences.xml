@@ -13,5 +13,5 @@
         android:dialogTitle="Select a background color"
         android:entries="@array/pref_color_names"
         android:entryValues="@array/pref_color_values"
-        android:defaultValue="1" />
+        android:defaultValue="#646464" />
 </PreferenceScreen>
