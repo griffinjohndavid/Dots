@@ -241,7 +241,7 @@ public class GameActivity extends AppCompatActivity {
             int col = x / cellWidth;
             int row = y / cellHeight;
             int index = row * 6 + col;
-            if ((col < mGame.NUM_CELLS && col > 0) && (row < mGame.NUM_CELLS && row > 0))
+            if ((col < mGame.NUM_CELLS && col > -1) && (row < mGame.NUM_CELLS && row > -1))
             {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     // add code for updating view
@@ -261,7 +261,11 @@ public class GameActivity extends AppCompatActivity {
                     // add code for updating view
                     mGame.addDotToPath(mGame.getDot(row, col));
                     mGame.finishMove();
+<<<<<<< HEAD
                     if (mGame.isGameOver()) {mScoreButton.setVisibility(View.VISIBLE);}
+=======
+                    mGame.checkGameOver();
+>>>>>>> b31298c97a372ea8549734dd8acb17975a3e2f91
                     mScoreValue.setText(mGame.getScore());
                     if (mGame.getGameType().equals("Moves"))
                     {
@@ -269,6 +273,9 @@ public class GameActivity extends AppCompatActivity {
                     }
                     mGame.clearDotPath();
                     mSoundPool.play(mSoundIds.get(2), 1, 1, 1, 0, 1);
+                    if (mGame.isGameOver()){
+                        mScoreButton.setVisibility(View.VISIBLE);
+                    }
                     drawBoard();
                     return true;
                 }

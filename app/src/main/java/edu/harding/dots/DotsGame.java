@@ -195,6 +195,13 @@ public class DotsGame {
         return mGameStatus;
     }
 
+    public void checkGameOver(){
+        if (mMoves == 0)
+        {
+            gameOver();
+        }
+    }
+
     public void finishMove() {
         if (mDotPath.size() > 1) {
             // Move all dots above each dot in the path down
