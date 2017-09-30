@@ -128,46 +128,52 @@ public class DotsGame {
     }
 
     public AddDotStatus addDotToPath(Dot dot) {
-        if (mDotPath.size() == 0) {
-            mDotPath.add(dot);
-            dot.selected = true;
-            return AddDotStatus.Added;
+        if (mMoves <= 0 && mTimer <= 0)
+        {
+            return AddDotStatus.Rejected;
         }
         else {
-            Dot lastDot = mDotPath.get(mDotPath.size() - 1);
-
-            if (!mDotPath.contains(dot)) {
-                // New dot encountered
-                if (lastDot.color == dot.color && lastDot.isAdjacent(dot)) {
-                    mDotPath.add(dot);
-                    dot.selected = true;
-                    return AddDotStatus.Added;
-                }
+            if (mDotPath.size() == 0) {
+                mDotPath.add(dot);
+                dot.selected = true;
+                return AddDotStatus.Added;
             }
-            else if (mDotPath.size() > 1) {
-                // Backtracking or cycle
-                Dot secondLast = mDotPath.get(mDotPath.size() - 2);
+            else {
+                Dot lastDot = mDotPath.get(mDotPath.size() - 1);
 
-                // Backtracking
-                if (secondLast.equals(dot)) {
-                    Dot removedDot = mDotPath.remove(mDotPath.size() - 1);
-                    removedDot.selected = false;
-                    return AddDotStatus.Removed;
+                if (!mDotPath.contains(dot)) {
+                    // New dot encountered
+                    if (lastDot.color == dot.color && lastDot.isAdjacent(dot)) {
+                        mDotPath.add(dot);
+                        dot.selected = true;
+                        return AddDotStatus.Added;
+                    }
                 }
-                else if (!lastDot.equals(dot) && lastDot.isAdjacent(dot)) {
-                    // Made cycle, so add all dots of same color to path
-                    mDotPath.clear();
-                    for (int row = 0; row < mNumCells; row++) {
-                        for (int col = 0; col < mNumCells; col++) {
-                            Dot currentDot = getDot(row, col);
-                            if (currentDot.color == dot.color) {
-                                dot.selected = true;
-                                mDotPath.add(currentDot);
+                else if (mDotPath.size() > 1) {
+                    // Backtracking or cycle
+                    Dot secondLast = mDotPath.get(mDotPath.size() - 2);
+
+                    // Backtracking
+                    if (secondLast.equals(dot)) {
+                        Dot removedDot = mDotPath.remove(mDotPath.size() - 1);
+                        removedDot.selected = false;
+                        return AddDotStatus.Removed;
+                    }
+                    else if (!lastDot.equals(dot) && lastDot.isAdjacent(dot)) {
+                        // Made cycle, so add all dots of same color to path
+                        mDotPath.clear();
+                        for (int row = 0; row < mNumCells; row++) {
+                            for (int col = 0; col < mNumCells; col++) {
+                                Dot currentDot = getDot(row, col);
+                                if (currentDot.color == dot.color) {
+                                    dot.selected = true;
+                                    mDotPath.add(currentDot);
+                                }
                             }
                         }
-                    }
 
-                    return AddDotStatus.CompleteCycle;
+                        return AddDotStatus.CompleteCycle;
+                    }
                 }
             }
         }
@@ -197,7 +203,7 @@ public class DotsGame {
             }
             else if (mGameType == GameTypes.Timed)
             {
-                mTimer--;
+                // update timer?
             }
         }
     }
