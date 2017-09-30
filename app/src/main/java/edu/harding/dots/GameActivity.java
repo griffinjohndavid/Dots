@@ -157,27 +157,52 @@ public class GameActivity extends AppCompatActivity {
                     if (mGame.getDot(row, col).color == 0)
                     {
                         if (mIsColorBlind) {mGameTextViews[i].setText(RED);}
-                        mGameTextViews[i].setBackground(ContextCompat.getDrawable(this, R.drawable.dot_red));
+                        if (mGame.getDot(row, col).selected) {
+                            mGameTextViews[i].setBackground(ContextCompat.getDrawable(this, R.drawable.dot_red_selected));
+                        }
+                        else {
+                            mGameTextViews[i].setBackground(ContextCompat.getDrawable(this, R.drawable.dot_red));
+                        }
                     }
                     else if (mGame.getDot(row, col).color == 1)
                     {
                         if (mIsColorBlind) {mGameTextViews[i].setText(GREEN);}
-                        mGameTextViews[i].setBackground(ContextCompat.getDrawable(this, R.drawable.dot_green));
+                        if (mGame.getDot(row, col).selected) {
+                            mGameTextViews[i].setBackground(ContextCompat.getDrawable(this, R.drawable.dot_green_selected));
+                        }
+                        else {
+                            mGameTextViews[i].setBackground(ContextCompat.getDrawable(this, R.drawable.dot_green));
+                        }
                     }
                     else if (mGame.getDot(row, col).color == 2)
                     {
                         if (mIsColorBlind) {mGameTextViews[i].setText(BLUE);}
-                        mGameTextViews[i].setBackground(ContextCompat.getDrawable(this, R.drawable.dot_blue));
+                        if (mGame.getDot(row, col).selected) {
+                            mGameTextViews[i].setBackground(ContextCompat.getDrawable(this, R.drawable.dot_blue_selected));
+                        }
+                        else {
+                            mGameTextViews[i].setBackground(ContextCompat.getDrawable(this, R.drawable.dot_blue));
+                        }
                     }
                     else if (mGame.getDot(row, col).color == 3)
                     {
                         if (mIsColorBlind) {mGameTextViews[i].setText(YELLOW);}
-                        mGameTextViews[i].setBackground(ContextCompat.getDrawable(this, R.drawable.dot_yellow));
+                        if (mGame.getDot(row, col).selected) {
+                            mGameTextViews[i].setBackground(ContextCompat.getDrawable(this, R.drawable.dot_yellow_selected));
+                        }
+                        else {
+                            mGameTextViews[i].setBackground(ContextCompat.getDrawable(this, R.drawable.dot_yellow));
+                        }
                     }
                     else if (mGame.getDot(row, col).color == 4)
                     {
                         if (mIsColorBlind) {mGameTextViews[i].setText(PURPLE);}
-                        mGameTextViews[i].setBackground(ContextCompat.getDrawable(this, R.drawable.dot_purple));
+                        if (mGame.getDot(row, col).selected) {
+                            mGameTextViews[i].setBackground(ContextCompat.getDrawable(this, R.drawable.dot_purple_selected));
+                        }
+                        else {
+                            mGameTextViews[i].setBackground(ContextCompat.getDrawable(this, R.drawable.dot_purple));
+                        }
                     }
                     i++;
                 }
