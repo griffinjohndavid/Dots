@@ -11,7 +11,7 @@ import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
-    final private int REQUEST_CODE_SETTINGS = 1;
+    private String bgColor = "#646464";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         // Load the preference
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         Log.d("test", "background = " + prefs.getString("pref_background_color", "?"));
-
+        bgColor = prefs.getString("pref_background_color", "?");
     }
 
     public void timedGameClick(View view) {
@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         // Launch GameActivity
         Intent intent = new Intent(this, GameActivity.class);
         intent.putExtra("extraGameType", timedString);
+        intent.putExtra("bgColor", bgColor);
         startActivity(intent);
     }
 
@@ -42,21 +43,13 @@ public class MainActivity extends AppCompatActivity {
         // Launch GameActivity
         Intent intent = new Intent(this, GameActivity.class);
         intent.putExtra("extraGameType", movesString);
+        intent.putExtra("bgColor", bgColor);
         startActivity(intent);
     }
 
     public void settingsClick(View view) {
         // Launch SettingsActivity
         Intent intent = new Intent(this, SettingsActivity.class);
-        startActivityForResult(intent, REQUEST_CODE_SETTINGS);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_SETTINGS) {
-            String colorId = data.getStringExtra("newBackground");
-            ContextCompat.getColor(this, Integer.parseInt(colorId));
-            Log.d("test", colorId);
-        }
+        startActivity(intent);
     }
 }

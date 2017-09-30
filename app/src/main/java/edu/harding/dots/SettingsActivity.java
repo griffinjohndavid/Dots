@@ -56,8 +56,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
     @Override
     protected void onStop() {
-        super.onStop();
-
         Intent intent = new Intent();
         intent.putExtra("newBackground", BACKGROUND_COLOR);
 
@@ -65,6 +63,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity implements Sha
 
         // Terminate the activity
         finish();
+
+        super.onStop();
     }
 
     private void setupActionBar() {

@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.GridLayout;
 import android.widget.TextView;
 
+import static android.graphics.Color.parseColor;
+
 public class GameActivity extends AppCompatActivity {
 
     private DotsGame mGame;
@@ -30,6 +32,8 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        this.findViewById(android.R.id.content).setBackgroundColor(parseColor(getIntent().getStringExtra("bgColor")));
 
         mGameTimerValue = (TextView) findViewById(R.id.timeValue);
         mGameTimer = (TextView) findViewById(R.id.time);
