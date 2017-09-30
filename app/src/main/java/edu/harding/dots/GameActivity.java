@@ -1,5 +1,9 @@
 package edu.harding.dots;
 
+import android.annotation.TargetApi;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.os.Build;
 import android.os.CountDownTimer;
 import android.media.SoundPool;
 import android.support.v4.content.ContextCompat;
@@ -11,6 +15,8 @@ import android.widget.GridLayout;
 import android.widget.TextView;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+
+import java.util.ArrayList;
 
 import static android.graphics.Color.parseColor;
 
