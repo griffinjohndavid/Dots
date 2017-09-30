@@ -261,11 +261,8 @@ public class GameActivity extends AppCompatActivity {
                     // add code for updating view
                     mGame.addDotToPath(mGame.getDot(row, col));
                     mGame.finishMove();
-<<<<<<< HEAD
                     if (mGame.isGameOver()) {mScoreButton.setVisibility(View.VISIBLE);}
-=======
                     mGame.checkGameOver();
->>>>>>> b31298c97a372ea8549734dd8acb17975a3e2f91
                     mScoreValue.setText(mGame.getScore());
                     if (mGame.getGameType().equals("Moves"))
                     {
