@@ -196,7 +196,7 @@ public class DotsGame {
     }
 
     public void checkGameOver(){
-        if (mMoves == 0)
+        if (mGameType == GameTypes.Moves && mMoves == 0)
         {
             gameOver();
         }
