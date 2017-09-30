@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, GameActivity.class);
         intent.putExtra("extraGameType", movesString);
         intent.putExtra("bgColor", bgColor);
+        intent.putExtra("isColorBlind", isColorBlind);
         startActivity(intent);
     }
 
