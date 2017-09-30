@@ -29,6 +29,8 @@ public class GameActivity extends AppCompatActivity {
     private TextView mGameTimer;
     private TextView mScoreValue;
 
+    private CountDownTimer mCountDownTimer;
+
     private String mGameType;
 
     private String RED = "×";
@@ -114,7 +116,7 @@ public class GameActivity extends AppCompatActivity {
 
     private void countdownTimer() {
         // code from https://developer.android.com/reference/android/os/CountDownTimer.html
-        new CountDownTimer(30000, 1000) {
+        mCountDownTimer = new CountDownTimer(30000, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 mGameTimerValue.setText("" + millisUntilFinished / 1000);
@@ -138,6 +140,7 @@ public class GameActivity extends AppCompatActivity {
         }
         else if (mGame.getGameType().equals("Timed"))
         {
+            mCountDownTimer.cancel();
             mGameTimerValue.setText(mGame.getTime());
             countdownTimer();
         }
