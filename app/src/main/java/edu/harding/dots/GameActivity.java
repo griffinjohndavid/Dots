@@ -53,7 +53,7 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide);
+        Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fate_in);
         
         mSoundPool = createSoundPool();
         mSoundIds = new ArrayList<>();
@@ -70,7 +70,7 @@ public class GameActivity extends AppCompatActivity {
         mScoreValue = (TextView) findViewById(R.id.scoreValue);
         mScoreButton = (Button) findViewById(R.id.shareHiscore);
 
-        mGameTextViews = new TextView[(DotsGame.NUM_CELLS * DotsGame.NUM_CELLS)]
+        mGameTextViews = new TextView[(DotsGame.NUM_CELLS * DotsGame.NUM_CELLS)];
             
         GridLayout gridLayout = (GridLayout) findViewById(R.id.gameBoard);
         gridLayout.startAnimation(animation1);
@@ -240,34 +240,36 @@ public class GameActivity extends AppCompatActivity {
             int col = x / cellWidth;
             int row = y / cellHeight;
             int index = row * 6 + col;
-
-            if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                // add code for updating view
-                mGame.addDotToPath(mGame.getDot(row, col));
-                mSoundPool.play(mSoundIds.get(1), 1, 1, 1, 0, 1);
-                drawBoard();
-                return true;
-            }
-            else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                // add code for updating view
-                mGame.addDotToPath(mGame.getDot(row, col));                
-                mSoundPool.play(mSoundIds.get(1), 1, 1, 1, 0, 1);
-                drawBoard();
-                return true;
-            }
-            else if (event.getAction() == MotionEvent.ACTION_UP) {
-                // add code for updating view
-                mGame.addDotToPath(mGame.getDot(row, col));
-                mGame.finishMove();
-                mScoreValue.setText(mGame.getScore());
-                if (mGame.getGameType().equals("Moves"))
-                {
-                    mGameTimerValue.setText(mGame.getMoves());
+            if ((col < mGame.NUM_CELLS && col > 0) && (row < mGame.NUM_CELLS && row > 0))
+            {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    // add code for updating view
+                    mGame.addDotToPath(mGame.getDot(row, col));
+                    mSoundPool.play(mSoundIds.get(1), 1, 1, 1, 0, 1);
+                    drawBoard();
+                    return true;
                 }
-                mGame.clearDotPath();
-                mSoundPool.play(mSoundIds.get(2), 1, 1, 1, 0, 1);
-                drawBoard();
-                return true;
+                else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                    // add code for updating view
+                    mGame.addDotToPath(mGame.getDot(row, col));
+                    mSoundPool.play(mSoundIds.get(1), 1, 1, 1, 0, 1);
+                    drawBoard();
+                    return true;
+                }
+                else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    // add code for updating view
+                    mGame.addDotToPath(mGame.getDot(row, col));
+                    mGame.finishMove();
+                    mScoreValue.setText(mGame.getScore());
+                    if (mGame.getGameType().equals("Moves"))
+                    {
+                        mGameTimerValue.setText(mGame.getMoves());
+                    }
+                    mGame.clearDotPath();
+                    mSoundPool.play(mSoundIds.get(2), 1, 1, 1, 0, 1);
+                    drawBoard();
+                    return true;
+                }
             }
 
             return false;
