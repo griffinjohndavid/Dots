@@ -12,6 +12,7 @@ import android.view.View;
 public class MainActivity extends AppCompatActivity {
 
     private String bgColor = "#646464";
+    private Boolean isColorBlind = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         Log.d("test", "background = " + prefs.getString("pref_background_color", "?"));
         bgColor = prefs.getString("pref_background_color", "?");
+        isColorBlind = prefs.getBoolean("colorblind_mode", isColorBlind);
     }
 
     public void timedGameClick(View view) {
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("extraGameType", timedString);
         if (bgColor == "?") {bgColor = "#646464";}
         intent.putExtra("bgColor", bgColor);
+        intent.putExtra("isColorBlind", isColorBlind);
         startActivity(intent);
     }
 
