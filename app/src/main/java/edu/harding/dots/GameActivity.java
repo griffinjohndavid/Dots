@@ -118,18 +118,20 @@ public class GameActivity extends AppCompatActivity {
             drawBoard();
         }
         else {
-
-            mGame = new DotsGame(mGameType);
+            mGameType = savedInstanceState.getString("gameType");
             // Restore game state
             if ("Timed".equals(getIntent().getStringExtra("extraGameType")))
             {
+                mGame = new DotsGame(mGameType);
                 gameModeTimed(savedInstanceState.getInt("timeLeft"));
                 mGame.mTimer = savedInstanceState.getInt("timeLeft");
             }
             if ("Moves".equals(getIntent().getStringExtra("extraGameType")))
             {
+                mGame = new DotsGame(mGameType);
                 gameModeMoves(savedInstanceState.getInt("movesLeft"));
                 mGame.mMoves = savedInstanceState.getInt("movesLeft");
+                mGameTimerValue.setText(mGame.getMoves());
             }
             mGame.setScore(savedInstanceState.getString("scoreAmount"));
             mScoreValue.setText(mGame.getScore());
@@ -164,6 +166,7 @@ public class GameActivity extends AppCompatActivity {
         // Save the board's state
         ArrayList<Integer> boardState = mGame.getBoardState();
         outState.putIntegerArrayList("boardState", boardState);
+        outState.putString("gameType", mGame.getGameType());
         outState.putInt("timeLeft", mGame.mTimer);
         outState.putInt("movesLeft", mGame.mMoves);
         outState.putString("scoreAmount", mGame.getScore());
@@ -218,9 +221,10 @@ public class GameActivity extends AppCompatActivity {
 
     public void newGameClick(View view) {
         mGame = new DotsGame(mGameType);
-        mCountDownTimer.cancel();
+
         if ("Timed".equals(getIntent().getStringExtra("extraGameType")))
         {
+            mCountDownTimer.cancel();
             gameModeTimed(defaultTime);
         }
         if ("Moves".equals(getIntent().getStringExtra("extraGameType")))
