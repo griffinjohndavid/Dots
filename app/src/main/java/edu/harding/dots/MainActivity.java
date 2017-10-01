@@ -38,6 +38,13 @@ public class MainActivity extends AppCompatActivity {
         mediaPlayer.start();
     }
 
+    @Override
+    protected void onDestroy() {
+        mediaPlayer.stop();
+        super.onDestroy();
+    }
+
+
     public void timedGameClick(View view) {
         String timedString = "Timed";
         // Launch GameActivity

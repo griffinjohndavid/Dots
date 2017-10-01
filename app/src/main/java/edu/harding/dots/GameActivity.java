@@ -1,7 +1,12 @@
 package edu.harding.dots;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.os.Build;
@@ -35,6 +40,13 @@ public class GameActivity extends AppCompatActivity {
 
     private CountDownTimer mCountDownTimer;
 
+
+    private SensorManager sm;
+
+    private float acelVal;
+    private float acelLas;
+    private float shake;
+
     private String mGameType;
 
     private String RED = "×";
@@ -58,11 +70,18 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game);
 
         Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fate_in);
-        
+
+        sm = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        sm.registerListener(sensorListener,sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
+
+        acelVal = SensorManager.GRAVITY_EARTH;
+        acelLas = SensorManager.GRAVITY_EARTH;
+        shake = 0.00f;
+
         mSoundPool = createSoundPool();
         mSoundIds = new ArrayList<>();
         mSoundIds.add(mSoundPool.load(this, R.raw.background, 1));
-        mSoundIds.add(mSoundPool.load(this, R.raw.select, 1));
+        mSoundIds.add(mSoundPool.load(this, R.raw.finish, 1));
         mSoundIds.add(mSoundPool.load(this, R.raw.deselect, 1));
         
         this.findViewById(android.R.id.content).setBackgroundColor(parseColor(getIntent().getStringExtra("bgColor")));
@@ -174,6 +193,8 @@ public class GameActivity extends AppCompatActivity {
         return new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
     }
 
+
+
     private void countdownTimer(Integer timeLength) {
         // code from https://developer.android.com/reference/android/os/CountDownTimer.html
         mCountDownTimer = new CountDownTimer(timeLength, 1000) {
@@ -188,7 +209,9 @@ public class GameActivity extends AppCompatActivity {
                 String timeValueToSet = ("" + 0);
                 mGameTimerValue.setText(timeValueToSet);
                 mGame.gameOver();
-                if (mGame.isGameOver()) {mScoreButton.setVisibility(View.VISIBLE);}
+                if (mGame.isGameOver()) {mScoreButton.setVisibility(View.VISIBLE);
+                    mSoundPool.play(mSoundIds.get(1), 1, 1, 1, 0, 1);
+                }
             }
         }.start();
     }
@@ -300,14 +323,12 @@ public class GameActivity extends AppCompatActivity {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     // add code for updating view
                     mGame.addDotToPath(mGame.getDot(row, col));
-                    mSoundPool.play(mSoundIds.get(1), 1, 1, 1, 0, 1);
                     drawBoard();
                     return true;
                 }
                 else if (event.getAction() == MotionEvent.ACTION_MOVE) {
                     // add code for updating view
                     mGame.addDotToPath(mGame.getDot(row, col));
-                    mSoundPool.play(mSoundIds.get(1), 1, 1, 1, 0, 1);
                     drawBoard();
                     return true;
                 }
@@ -323,7 +344,12 @@ public class GameActivity extends AppCompatActivity {
                     }
                     mGame.clearDotPath();
                     mSoundPool.play(mSoundIds.get(2), 1, 1, 1, 0, 1);
-                    if (mGame.isGameOver()) {mScoreButton.setVisibility(View.VISIBLE);}
+                    if (mGame.isGameOver()) {
+                        mScoreButton.setVisibility(View.VISIBLE);
+                        mSoundPool.play(mSoundIds.get(1), 1, 1, 1, 0, 1);
+
+                    }
+
                     drawBoard();
                     return true;
                 }
@@ -347,4 +373,44 @@ public class GameActivity extends AppCompatActivity {
             startActivity(chooser);
         }
     }
+    private final SensorEventListener sensorListener = new SensorEventListener() {
+        @Override
+        public void onSensorChanged(SensorEvent sensorEvent) {
+            float x = sensorEvent.values[0];
+            float y = sensorEvent.values[1];
+            float z = sensorEvent.values[2];
+
+            acelLas = acelVal;
+            acelVal = (float) Math.sqrt((double) (x*x +  y*y + z*z));
+            float delta = acelVal - acelLas;
+            shake = shake * 0.9f + delta;
+
+            if (shake > 6){
+                mGame = new DotsGame(mGameType);
+                mCountDownTimer.cancel();
+                if ("Timed".equals(getIntent().getStringExtra("extraGameType")))
+                {
+                    gameModeTimed(defaultTime);
+                }
+                if ("Moves".equals(getIntent().getStringExtra("extraGameType")))
+                {
+                    gameModeMoves(defaultMoves);
+                }
+                mScoreValue.setText(mGame.getScore());
+                drawBoard();
+                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fate_in);
+
+                GridLayout gridLayout = (GridLayout) findViewById(R.id.gameBoard);
+
+                gridLayout.startAnimation(animation1);
+                drawBoard();
+                mScoreButton.setVisibility(View.INVISIBLE);
+            }
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int i) {
+
+        }
+    };
 }
