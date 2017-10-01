@@ -20,15 +20,15 @@ There are currently no issues known. If you discover an issue, please submit it 
 As extra credit, we implemented a way to shake the device and start a new game.
 
 #### Team Contributions
-* John David Griffin
+* John David Griffin **_33%_**
 	* Created repository
 	* Designed App Icon and Layouts
 	* Created XML Drawables for dots
 	* Created Settings activity
 	* Implemented code to handle setting changes
-* Jhoel Zuniga
+* Jhoel Zuniga **_33%_**
 	* Implemented code to add audio to game
 	* Added logic for doing animations
-* Noah Kinslow
+* Noah Kinslow **_33%_**
 	* Implemented game logic
 	* Implemented logic for handling device rotation
