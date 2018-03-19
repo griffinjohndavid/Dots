@@ -16,19 +16,7 @@ The only requirement for *Dots* is an Android device running Android 4.2 Jelly B
 #### Known Issues
 There are currently no issues known. If you discover an issue, please submit it via the [Issues](https://github.com/jgriffin3/Dots/issues) tab on GitHub.
 
-#### Extra Credit Completed
-As extra credit, we implemented a way to shake the device and start a new game.
-
-#### Team Contributions
-* John David Griffin **_33%_**
-	* Created repository
-	* Designed App Icon and Layouts
-	* Created XML Drawables for dots
-	* Created Settings activity
-	* Implemented code to handle setting changes
-* Jhoel Zuniga **_33%_**
-	* Implemented code to add audio to game
-	* Added logic for doing animations
-* Noah Kinslow **_33%_**
-	* Implemented game logic
-	* Implemented logic for handling device rotation
+#### Contributors
+* John David Griffin
+* Jhoel Zuniga
+* Noah Kinslow
